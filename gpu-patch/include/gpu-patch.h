@@ -32,7 +32,8 @@ enum GPUPatchType
   GPU_PATCH_TYPE_ADDRESS_PATCH = 1,
   GPU_PATCH_TYPE_ADDRESS_ANALYSIS = 2,
   GPU_PATCH_TYPE_ADDRESS_CCT = 3,
-  GPU_PATCH_TYPE_COUNT = 4
+  GPU_PATCH_TYPE_REDUNDANT_WRITE = 4,
+  GPU_PATCH_TYPE_COUNT = 5,//this line is for enum size count, if you wanna add a new type please insert it before this line and plus type_count for 1.
 };
 
 // Complete record
@@ -68,6 +69,14 @@ typedef struct gpu_patch_record_address {
   uint32_t size;
   uint64_t address[GPU_PATCH_WARP_SIZE];
 } gpu_patch_record_address_t;
+
+typedef struct gpu_patch_record_addr_history{
+  uint64_t addr; // for indexing fast. Index should be (addr-start_addr)/type_size to directly map the address to the index
+  uint64_t* pc_stack;
+  uint64_t* flat_thread_id_stack; // flat_thread_id history
+  uint64_t* flags_stack; // write/read/atomic/sync history
+
+} gpu_patch_record_addr_history_t;
 
 // Address only, gpu analysis
 typedef struct gpu_patch_analysis_address {

@@ -8,3 +8,5 @@ cmake-build-release
 build
 *.o
 gpu-patch/test
+.log
+.csv

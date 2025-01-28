@@ -184,8 +184,8 @@ static __device__ void block_radix_sort(
     // @Yueming TODO: use a for loop to split the unfolded_buffer into multiple tiles, and use block_radix_sort_tile to process each tile. Add another outside for loop to process at least twice to compress more. Finally, the unfolded_buffer_records_g_sorted will have compressed histogram.
   uint32_t cur_index = 0;
   uint32_t tile_size = THREADS * ITEMS_PER_THREAD;
-  uint64_t *unfolded_buffer_records_g = unfolded_buffer->records;
-  uint64_t *hist_buffer_records = hist_buffer->records;
+  uint64_t *unfolded_buffer_records_g = (uint64_t *)unfolded_buffer->records;
+  uint64_t *hist_buffer_records = (uint64_t *)hist_buffer->records;
 
   auto warp_id = blockDim.x / GPU_PATCH_WARP_SIZE * blockIdx.x + threadIdx.x / GPU_PATCH_WARP_SIZE;
   // by default it is 4
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
   CHECK_CALL(cudaMalloc, ((void **)&unfolded_buffer_records_g,
                           sizeof(gpu_patch_addr_hist_t) * num_records * GPU_PATCH_WARP_SIZE));
   // it is used to store the itermediate sorted records in block_radix_sort
-  void *tmp_block_sort_tile = NULL;
+  gpu_patch_addr_hist_t *tmp_block_sort_tile = NULL;
   CHECK_CALL(cudaMalloc, ((void **)&tmp_block_sort_tile,
                           sizeof(gpu_patch_addr_hist_t) * GPU_PATCH_ANALYSIS_THREADS * GPU_PATCH_ANALYSIS_ITEMS));
   gpu_patch_buffer_t *unfolded_buffer_h;
