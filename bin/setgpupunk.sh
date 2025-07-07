@@ -1,7 +1,7 @@
 # set cuda enviroment
 # source ~/setenvs/setcuda11.2.sh
 # change to your install path
-export GPUPUNK_PATH=/home/yzhao62/opt/gpupunk_install
+export GPUPUNK_PATH=/home/yzhao62/opt/redsan_ae/redsan_install
 
 export ENABLE_GPUTRIGGER=1
 export GPUPATCH_PATH=${GPUPUNK_PATH}/gpu-patch/

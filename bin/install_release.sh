@@ -8,7 +8,7 @@ if [[ $current_path =~ .*gpupunk/bin$ ]];then
     tmp_path=${current_path%/*}
 fi
 source_path=${source_path:-$tmp_path}
-install_path=${install_path:-/home/yzhao62/opt/gpupunk_install}
+install_path=${install_path:-/home/yzhao62/opt/redsan_ae/redsan_install}
 if [ ! -d $install_path ]
 then
     echo "target install path not exist, will create it"
@@ -92,10 +92,10 @@ make install -j 4
 export ENABLE_GPUTRIGGER=1
 export REDSHOW_PATH=${install_path}/redshow
 export GPUPATCH_PATH=${install_path}/gpu-patch
-cd ${source_path}/drcctprof_clients
-./build_clean.sh ; ./build.sh
-cp -r ./DrCCTProf/build ${install_path}/drcctprof
-check_status "drcctprof install"
+# cd ${source_path}/drcctprof_clients
+# ./build_clean.sh ; ./build.sh
+# cp -r ./DrCCTProf/build ${install_path}/drcctprof
+# check_status "drcctprof install"
 
 # compile and install cubin_filter
 cd ${source_path}/cubin_filter
