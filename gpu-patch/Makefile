@@ -1,7 +1,7 @@
 # Modified from https://github.com/Jokeren/compute-sanitizer-samples/tree/master/MemoryTracker
 PROJECT ?= gpu-patch.fatbin gpu-patch-address.fatbin gpu-patch-addr-cct.fatbin
 PROJECT_ANALYSIS ?= gpu-analysis.fatbin
-PROJECT_TEST ?= test
+# PROJECT_TEST ?= test
 
 # Location of the CUDA Toolkit
 CUDA_PATH ?= /usr/local/cuda
@@ -15,7 +15,7 @@ SRC_DIR := src
 CXXFLAGS := $(INCLUDE_DIRS) -O3 --fatbin
 CXXFLAGS_WO_FATBIN := $(INCLUDE_DIRS) -O3
 
-ARCHS := 70 72 75 80 86 87
+ARCHS := 70 72 75 80 86 87 89
 
 # Generate SASS code for each SM architectures
 $(foreach sm,$(ARCHS),$(eval GENCODE_FLAGS += -gencode arch=compute_$(sm),code=sm_$(sm)))

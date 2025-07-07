@@ -4,6 +4,7 @@
 #include "gpu-queue.h"
 #include "utils.h"
 
+// #define GPU_ANALYSIS_DEBUG 1
 #define GPU_ANALYSIS_DEBUG 0
 
 #if GPU_ANALYSIS_DEBUG
@@ -307,13 +308,15 @@ extern "C" __launch_bounds__(GPU_PATCH_ANALYSIS_THREADS, 1)
         gpu_patch_buffer_t *buffer,
         gpu_patch_buffer_t *read_buffer,
         gpu_patch_buffer_t *write_buffer) {
+  PRINT("gpu analysis-> interval_merge\n")
   // Continue processing until CPU notifies analysis is done
   while (true) {
     // Wait until GPU notifies buffer is full. i.e., analysis can begin process.
     // Block sampling is not allowed
     while (buffer->analysis == 0 && atomic_load(&buffer->num_threads) != 0)
       ;
-
+    
+    PRINT("gpu analysis-> We break in!\n")
     if (atomic_load(&buffer->num_threads) == 0) {
       // buffer->analysis must be 0
       break;
@@ -423,5 +426,50 @@ extern "C" __launch_bounds__(GPU_PATCH_ANALYSIS_THREADS, 1)
   //   }
 
   // }
+  PRINT("gpu analysis-> enabled\n");
   unfold_records(buffer, tmp_buffer);
+}
+
+// TODO(Keren): multiple buffers, no need to wait
+extern "C" __launch_bounds__(GPU_PATCH_ANALYSIS_THREADS, 1)
+    __global__
+    void gpu_analysis_parse_buffer(
+        gpu_patch_buffer_t *buffer,
+        gpu_patch_buffer_t *buffer_write,
+        gpu_patch_buffer_t *buffer_read
+      ) {
+  PRINT("gpu analysis-> interval_merge\n")
+  // Continue processing until CPU notifies analysis is done
+  while (true) {
+    // Wait until GPU notifies buffer is full. i.e., analysis can begin process.
+    // Block sampling is not allowed
+    while (buffer->analysis == 0 && atomic_load(&buffer->num_threads) != 0)
+      ;
+    
+    PRINT("gpu analysis-> We break in!\n")
+    if (atomic_load(&buffer->num_threads) == 0) {
+      // buffer->analysis must be 0
+      break;
+    }
+
+    // sync with CPU
+    if (threadIdx.x == 0) {
+      buffer->full = 1;
+    }
+    __syncthreads();
+    while (buffer->full == 1)
+      ;
+    // Compact is done
+    __syncthreads();
+
+    if (threadIdx.x == 0) {
+      buffer->analysis = 0;
+      
+    }
+    __syncthreads();
+  }
+
+  if (threadIdx.x == 0) {
+    atomic_store_system(&buffer->num_threads, (uint32_t)0);
+  }
 }

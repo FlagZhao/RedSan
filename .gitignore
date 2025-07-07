@@ -8,3 +8,8 @@ cmake-build-release
 build
 *.o
 gpu-patch/test
+./redundant_write
+*.asc
+*.log
+*.csv
+redsan_samples/

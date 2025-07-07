@@ -8,7 +8,7 @@ if [[ $current_path =~ .*gpupunk/bin$ ]];then
     tmp_path=${current_path%/*}
 fi
 source_path=${source_path:-$tmp_path}
-install_path=${install_path:-~/opt/gpupunk_install}
+install_path=${install_path:-/home/yzhao62/opt/gpupunk_install}
 if [ ! -d $install_path ]
 then
     echo "target install path not exist, will create it"
@@ -63,9 +63,12 @@ make PREFIX=${install_path}/gpu-patch CUDA_PATH=$CUDA_PATH install -j 4
 check_status "gpu-patch install"
 
 # compile and install redshow
+
 cd  ${source_path}/redshow
 make clean
-make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch DEBUG=1  STATIC_CPP=1 install -j 12 -f Makefile.static
+echo "Make redshow command: "
+echo "make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch STATIC_CPP=1 install -f Makefile.static"
+make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch STATIC_CPP=1 install -f Makefile.static
 check_status "redshow install"
 
 # compile and install libmonitor
@@ -80,7 +83,7 @@ make install
 cd ${source_path}/gputrigger
 rm -rf ${source_path}/gputrigger/build
 mkdir build && cd build
-cmake ..  -DCMAKE_INSTALL_PREFIX=${install_path}/gputrigger -Dgpu_patch_path=${install_path}/gpu-patch -Dredshow_path=${install_path}/redshow 
+cmake .. -DENABLE_DEBUG=ON -DCMAKE_INSTALL_PREFIX=${install_path}/gputrigger -Dgpu_patch_path=${install_path}/gpu-patch -Dredshow_path=${install_path}/redshow 
 make -j 16
 check_status "gputrigger install"
 make install -j 4
