@@ -2,9 +2,6 @@
 	path = gputrigger
 	url = git@github.com:FlagZhao/gputrigger.git
 	branch = redundant
-[submodule "gpupunk_samples"]
-	path = gpupunk_samples
-	url = git@github.com:FindHao/gpupunk_samples.git
 [submodule "redshow"]
 	path = redshow
 	url = git@github.com:FlagZhao/redshow.git
@@ -12,6 +9,4 @@
 [submodule "libmonitor"]
 	path = libmonitor
 	url = git@github.com:HPCToolkit/libmonitor.git
-[submodule "drcctprof_clients"]
-	path = drcctprof_clients
-	url = git@github.com:dolanzhao/drcctprof_clients.git
+

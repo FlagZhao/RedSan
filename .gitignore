@@ -13,3 +13,5 @@ gpu-patch/test
 *.log
 *.csv
 redsan_samples/
+gpupunk_samples/
+drcctprof_clients/
