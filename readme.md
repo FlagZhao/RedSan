@@ -1,6 +1,6 @@
 # RedSan
 
- <img src="./gpupunk.png" width = "500" alt="GPUPUNK" align=center />
+ <img src="./redsan.jpg" width = "500" alt="GPUPUNK" align=center />
 
 
 RedSan is a tool to detect and analyze redundant memory instructions in GPU programs.
