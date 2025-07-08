@@ -4,11 +4,11 @@
 
 current_path=$(dirname $(readlink -f $0))
 # if current_path ends with gpupunk/bin, then source_path is gpupunk
-if [[ $current_path =~ .*gpupunk/bin$ ]];then
+if [[ $current_path =~ .*RedSan/bin$ ]];then
     tmp_path=${current_path%/*}
 fi
 source_path=${source_path:-$tmp_path}
-install_path=${install_path:-/home/yzhao62/opt/gpupunk_install}
+install_path=${install_path:-/home/yzhao62/opt/redsan/RedSan/redsan_install}
 if [ ! -d $install_path ]
 then
     echo "target install path not exist, will create it"
@@ -46,7 +46,7 @@ export SPACK_ROOT=$(pwd)/spack
 source ${SPACK_ROOT}/share/spack/setup-env.sh
 # Fix the versions of dependencies
 # spack install boost@1.81.0 mbedtls@3.3.0 libs=shared elfutils@0.189
-spack install boost@1.81.0 mbedtls@3.6.2 libs=shared elfutils@0.189
+spack install boost@1.81.0 +graph +regex mbedtls@3.6.2 libs=shared elfutils@0.189
 
 check_status "spack install"
 spack load boost mbedtls elfutils
@@ -92,10 +92,10 @@ make install -j 4
 export ENABLE_GPUTRIGGER=1
 export REDSHOW_PATH=${install_path}/redshow
 export GPUPATCH_PATH=${install_path}/gpu-patch
-cd ${source_path}/drcctprof_clients
-./build_clean.sh ; ./build.sh
-cp -r ./DrCCTProf/build ${install_path}/drcctprof
-check_status "drcctprof install"
+# cd ${source_path}/drcctprof_clients
+# ./build_clean.sh ; ./build.sh
+# cp -r ./DrCCTProf/build ${install_path}/drcctprof
+# check_status "drcctprof install"
 
 # compile and install cubin_filter
 cd ${source_path}/cubin_filter
