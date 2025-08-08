@@ -1,12 +1,12 @@
 [submodule "gputrigger"]
 	path = gputrigger
-	url = git@github.com:FlagZhao/gputrigger.git
+	url = https://github.com/FlagZhao/gputrigger.git
 	branch = redundant
 [submodule "redshow"]
 	path = redshow
-	url = git@github.com:FlagZhao/redshow.git
+	url = https://github.com/FlagZhao/redshow.git
 	branch = redundant
 [submodule "libmonitor"]
 	path = libmonitor
-	url = git@github.com:HPCToolkit/libmonitor.git
+	url = https://github.com/HPCToolkit/libmonitor.git
 
