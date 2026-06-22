@@ -46,8 +46,7 @@ export SPACK_ROOT=$(pwd)/spack
 source ${SPACK_ROOT}/share/spack/setup-env.sh
 # Fix the versions of dependencies
 # spack install boost@1.81.0 mbedtls@3.3.0 libs=shared elfutils@0.189
-spack install boost@1.81.0 mbedtls@3.6.2 libs=shared elfutils@0.189
-
+spack install boost@1.81.0 +graph +regex mbedtls@3.6.2 libs=shared elfutils@0.189
 check_status "spack install"
 spack load boost mbedtls elfutils
 
@@ -65,7 +64,9 @@ check_status "gpu-patch install"
 # compile and install redshow
 cd  ${source_path}/redshow
 make clean
-make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch DEBUG=1  STATIC_CPP=1 install -j 12 -f Makefile.static
+echo "Make redshow command: "
+echo "make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch STATIC_CPP=1 install -f Makefile.static"
+make PREFIX=${install_path}/redshow BOOST_DIR=$B GPU_PATCH_DIR=${install_path}/gpu-patch STATIC_CPP=1 install -f Makefile.static
 check_status "redshow install"
 
 # compile and install libmonitor
@@ -80,7 +81,7 @@ make install
 cd ${source_path}/gputrigger
 rm -rf ${source_path}/gputrigger/build
 mkdir build && cd build
-cmake ..  -DCMAKE_INSTALL_PREFIX=${install_path}/gputrigger -Dgpu_patch_path=${install_path}/gpu-patch -Dredshow_path=${install_path}/redshow 
+cmake .. -DENABLE_DEBUG=ON -DCMAKE_INSTALL_PREFIX=${install_path}/gputrigger -Dgpu_patch_path=${install_path}/gpu-patch -Dredshow_path=${install_path}/redshow
 make -j 16
 check_status "gputrigger install"
 make install -j 4
@@ -89,10 +90,10 @@ make install -j 4
 export ENABLE_GPUTRIGGER=1
 export REDSHOW_PATH=${install_path}/redshow
 export GPUPATCH_PATH=${install_path}/gpu-patch
-cd ${source_path}/drcctprof_clients
-./build_clean.sh ; ./build.sh
-cp -r ./DrCCTProf/build ${install_path}/drcctprof
-check_status "drcctprof install"
+# cd ${source_path}/drcctprof_clients
+# ./build_clean.sh ; ./build.sh
+# cp -r ./DrCCTProf/build ${install_path}/drcctprof
+# check_status "drcctprof install"
 
 # compile and install cubin_filter
 cd ${source_path}/cubin_filter
