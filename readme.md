@@ -21,7 +21,7 @@ Calling-context attribution is provided through [DrCCTProf](https://github.com/X
 ## Requirements
 
 - Linux, x86_64
-- An NVIDIA GPU, Volta or newer (`sm_70`–`sm_89`)
+- An NVIDIA GPU, Volta or newer (`sm_70`–`sm_90`)
 - CUDA Toolkit with `compute-sanitizer` (tested with CUDA 11.8 / 12.1)
 - CMake and Make
 - [Spack](https://github.com/spack/spack) (cloned automatically by the install script) to provision `boost`, `mbedtls`, and `elfutils`

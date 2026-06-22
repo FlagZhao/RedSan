@@ -15,7 +15,7 @@ SRC_DIR := src
 CXXFLAGS := $(INCLUDE_DIRS) -O3 --fatbin
 CXXFLAGS_WO_FATBIN := $(INCLUDE_DIRS) -O3
 
-ARCHS := 70 72 75 80 86 87 89
+ARCHS := 70 72 75 80 86 87 89 90
 
 # Generate SASS code for each SM architectures
 $(foreach sm,$(ARCHS),$(eval GENCODE_FLAGS += -gencode arch=compute_$(sm),code=sm_$(sm)))
